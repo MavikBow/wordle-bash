@@ -2,6 +2,7 @@
 
 source ./word_getter.sh
 source ./help_menu.sh
+source ./frame_drawer.sh
 
 error_code=0
 hard_mode=0
@@ -71,4 +72,30 @@ else
 	echo $word
 fi
 
+# main game loop
 
+is_running=1
+frame_file=$(mktemp)
+#frame_file=ex
+setup_empty_frame $frame_file
+echo -ne "$(cat $frame_file)"
+while [ $is_running -eq 1 ]; do
+	read -n 30 -r input_raw
+	tput cuu1
+	tput el
+	input_arr=($input_raw)
+	input_str=$(echo ${input_arr[0]} | awk '{ print tolower($0) }')
+
+	rerer=$(mktemp)
+	
+	if [[ $input_str =~ ^:(q|quit|exit)$ ]]; then
+		exit 0
+	elif [[ $input_str =~ ^[a-z]{5}$ ]]; then
+		sed -i '12s/.*/ /' $frame_file
+	else
+		sed -i '12s/.*/ unknown command\n/' $frame_file
+	fi
+
+	draw_frame $frame_file
+
+done

@@ -13,10 +13,6 @@ function print_help {
 	echo "In-game commands:"
 	echo ""
 	echo " :q, :quit, :exit		Quits the game."
-	echo " :hard				Applies the harm mode. Can only be done before the 1st attempt."
-	echo " :easy				Applies the easy mode. Can only be done before the 1st attempt."
-	echo " :rand				Sets the word to random. Resets your progress."
-	echo " :help				Will print the in-game commands and what they do."
 	echo ""
 	echo "Source code for this is available at <https://github.com/MavikBow/wordle-bash/>"
 }
