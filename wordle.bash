@@ -76,9 +76,9 @@ fi
 
 is_running=1
 frame_file=$(mktemp)
-#frame_file=ex
 setup_empty_frame $frame_file
 echo -ne "$(cat $frame_file)"
+
 while [ $is_running -eq 1 ]; do
 	read -n 30 -r input_raw
 	tput cuu1
@@ -88,12 +88,16 @@ while [ $is_running -eq 1 ]; do
 
 	rerer=$(mktemp)
 	
-	if [[ $input_str =~ ^:(q|quit|exit)$ ]]; then
+	if [[ $input_str =~ ^(:(q|quit|exit))|(quit)|(exit)$ ]]; then
 		exit 0
 	elif [[ $input_str =~ ^[a-z]{5}$ ]]; then
-		sed -i '12s/.*/ /' $frame_file
+		if [[ -z "$(grep -F "$input_str" .wordlist.txt)" ]]; then
+			sed -i '12s/.*/  not in word list\n/' $frame_file
+		else
+			sed -i '12s/.*/ /' $frame_file
+		fi
 	else
-		sed -i '12s/.*/ unknown command\n/' $frame_file
+		sed -i '12s/.*/  unknown command\n/' $frame_file
 	fi
 
 	draw_frame $frame_file

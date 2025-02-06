@@ -12,7 +12,7 @@ function print_help {
 	echo ""
 	echo "In-game commands:"
 	echo ""
-	echo " :q, :quit, :exit		Quits the game."
+	echo " :q, :quit, :exit, quit, exit   Quits the game."
 	echo ""
 	echo "Source code for this is available at <https://github.com/MavikBow/wordle-bash/>"
 }
