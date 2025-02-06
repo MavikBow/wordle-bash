@@ -30,7 +30,8 @@ else
 					exit 0
 				fi
 				# stupid long regex that forces YYYY/MM/DD format and forbids dates earlier that 2021/06/19
-				if [[ ! $2 =~ ^2021\/(06\/(19|2[0-9]|30)|(0[7-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01]))$|^(202[2-9]|20[3-9][0-9]|2[1-9][0-9][0-9]|[3-9][0-9]{3}|[1-9][0-9]{4,})\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$ ]]
+				# this regex also need to allow "today", "yesterday" and "tomorrow"
+				if [[ ! $2 =~ ^(2021\/(06\/(19|2[0-9]|30)|(0[7-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01]))$|^(202[2-9]|20[3-9][0-9]|2[1-9][0-9][0-9]|[3-9][0-9]{3}|[1-9][0-9]{4,})\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01]))|(today)|(yesterday)|(tomorrow)$ ]]
 				then
 					print_bad_date
 					exit 0
@@ -88,7 +89,8 @@ while [ $is_running -eq 1 ]; do
 
 	rerer=$(mktemp)
 	
-	if [[ $input_str =~ ^(:(q|quit|exit))|(quit)|(exit)$ ]]; then
+	if [[ $input_str =~ ^(:(q|quit|exit))|(quit|exit)$ ]]; then
+		rm "$frame_file" "$rerer"
 		exit 0
 	elif [[ $input_str =~ ^[a-z]{5}$ ]]; then
 		if [[ -z "$(grep -F "$input_str" .wordlist.txt)" ]]; then

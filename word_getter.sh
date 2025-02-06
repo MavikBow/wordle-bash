@@ -21,10 +21,10 @@ function get_from_openssl {
 # if no date, then today is used
 function get_word {
 	if [ -n "$1" ]; then
-		date_str=$(date -d $1 -u +%Y-%m-%d)
+		date_str=$(date -d $1 +%Y-%m-%d)
 		if [ $? -ne 0 ]; then return 2; fi
 	else
-		date_str=$(date -u +%Y-%m-%d)
+		date_str=$(date +%Y-%m-%d)
 	fi
 
 	temp1=$(mktemp)
