@@ -68,7 +68,7 @@ else
 fi
 
 if [[ $error_code -eq 1 ]]; then
-	echo "wordle.bash: It seems you're offline."
+	echo "wordle.bash: Either you're offline or you're trying to look too far into the future."
 	echo "Please check your internet connection and try again. If you're connected to Wi-Fi, make sure it's working properly."
 	exit 0
 elif [[ $error_code -eq 2 ]]; then
