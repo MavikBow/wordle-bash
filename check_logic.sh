@@ -57,7 +57,7 @@ function enforce_hard_mode {
   # Check greens
   for ((i = 0; i < target_length; i++)); do
 	  if [ -n "${greens[$i]}" ] && [ "${guess:i:1}" != "${greens[$i]}" ]; then
-		sed -i "12s/.*/must use '${greens[$i]}' in position $(( i + 1 )) (hard mode)\n/" $frame_file
+		sed -i "12s/.*/  must use '${greens[$i]}' at $(( i + 1 ))\n/" $frame_file
 		  return 1
 	  fi
   done
@@ -65,7 +65,7 @@ function enforce_hard_mode {
   # Check yellows
   for yellow in "${yellows[@]}"; do
 	  if [[ "$guess" != *"$yellow"* ]]; then
-		sed -i "12s/.*/must include '$yellow' somewhere in your guess (hard mode)\n/" $frame_file
+		sed -i "12s/.*/  must include '$yellow'\n/" $frame_file
 		  return 2
 	  fi
   done
@@ -114,13 +114,18 @@ function process_guess {
 	local attempt_number=$5
 
 	if [ $hard_mode -eq 1 ]; then
-		enforce_hard_mode "$guess" "$frame_file" # || return $?
+		enforce_hard_mode "$guess" "$frame_file" || return $?
 	fi
 
 	check_guess "$guess" "$frame_file"
 
 	# echos to the frame_file to render later
 	supply_string "$guess" "$feedback_str" "$frame_file" $attempt_number
+
+	# had to do it this way, because there are invis chars or smth in the way
+	if [[ "$(echo "$guess" | xargs)" == "$(echo "$target" | xargs)" ]]; then
+		return 69
+	fi
 
 	return 0
 }

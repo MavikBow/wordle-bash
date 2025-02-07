@@ -1,17 +1,17 @@
 #
-#     x x x x x x
-#     x x x x x x
-#     x x x x x x
-#     x x x x x x
-#     x x x x x x
-#     x x x x x x
+#      x x x x x
+#      x x x x x
+#      x x x x x
+#      x x x x x
+#      x x x x x
+#      x x x x x
 #
 # q w e r t y u i o p
 #  a s d f g h j k l
 #   z x c v b n m
 #
 # space for errors
-
+#        Phew
 BLACK="\033[97;40;1m"
 GREEN="\033[97;42;1m"
 YELLOW="\033[97;43;1m"

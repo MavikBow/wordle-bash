@@ -83,27 +83,44 @@ fi
 frame_file=$(mktemp)
 setup_empty_frame $frame_file
 echo -ne "$(cat $frame_file)"
+max_attempts=6
+now_attempt=1
 
 while true; do
-	read -n 30 -r input_raw
+	read -e -p "" input_raw
 	tput cuu1
 	tput el
 	input_arr=($input_raw)
 	input_str=$(echo ${input_arr[0]} | awk '{ print tolower($0) }')
 
-	rerer=$(mktemp)
-	
 	if [[ $input_str =~ ^(:(q|quit|exit))|(quit|exit)$ ]]; then
 		break
 	elif [[ $input_str =~ ^[a-z]{5}$ ]]; then
 		if [[ -z "$(grep -F "$input_str" .wordlist.txt)" ]]; then
 			sed -i '12s/.*/  not in word list\n/' $frame_file
 		else
-			# here should be the main logic
-# parameters are: $target $guess $frame_file $is_hard_mode $attempt_number
 			sed -i '12s/.*/ /' $frame_file
-#			echo -ne "\033[1A"
-			process_guess $word $input_str $frame_file $hard_mode 1 
+			# here should be the main logic
+			# parameters are: $target $guess $frame_file $is_hard_mode $attempt_number
+			process_guess $word $input_str $frame_file $hard_mode $now_attempt
+			exit_status=$?
+			if [ "$exit_status" -eq 69 ]; then
+				case $now_attempt in
+					1) sed -i "12s/.*/      \\\033\[97;42;1mGenius\\\033[0m\n/" $frame_file ;;
+					2) sed -i "12s/.*/    \\\033\[97;42;1mMagnificent\\\033\[0m\n/" $frame_file ;;
+					3) sed -i "12s/.*/     \\\033\[97;42;1mImpressive\\\033\[0m\n/" $frame_file ;;
+					4) sed -i "12s/.*/      \\\033\[97;42;1mSplendid\\\033\[0m\n/" $frame_file ;;
+					5) sed -i "12s/.*/        \\\033\[97;42;1mGreat\\\033\[0m\n/" $frame_file ;;
+					6) sed -i "12s/.*/        \\\033\[97;42;1mPhew\\\033\[0m\n/" $frame_file ;;
+				esac
+				break
+			elif [ "$exit_status" -eq 0 ]; then
+				now_attempt=$(( $now_attempt + 1 ))
+				echo $now_attempt >> file
+				if [ $now_attempt -eq 7 ]; then
+					break
+				fi
+			fi
 		fi
 	else
 		sed -i '12s/.*/  unknown command\n/' $frame_file
@@ -113,4 +130,6 @@ while true; do
 
 done
 
-rm $frame_file $rerer
+draw_frame $frame_file
+rm $frame_file
+exit 0
