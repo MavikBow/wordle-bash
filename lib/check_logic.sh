@@ -121,8 +121,7 @@ function process_guess {
 	# echos to the frame_file to render later
 	supply_string "$guess" "$feedback_str" "$frame_file" $attempt_number
 
-	# had to do it this way, because there are invis chars or smth in the way
-	if [[ "$(echo "$guess" | xargs)" == "$(echo "$target" | xargs)" ]]; then
+	if [[ "$guess" == "$target" ]]; then
 		return 69
 	fi
 

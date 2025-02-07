@@ -80,6 +80,7 @@ fi
 
 # main game loop
 
+word="${word:0:5}"
 frame_file=$(mktemp)
 setup_empty_frame $frame_file
 echo -ne "$(cat $frame_file)"
