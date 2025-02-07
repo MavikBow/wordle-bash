@@ -47,4 +47,5 @@ function draw_frame {
 	echo -ne "$(cat $1)"
 	echo -ne "\033[${LINES}D"
 	echo -ne "\033[1B"
+	echo -ne "\033[${LINES}D"
 }

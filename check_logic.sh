@@ -1,13 +1,12 @@
 # hello, zuko here
 source ./frame_drawer.sh
 
-# Target word (predefined)
-target="apple"
 target_length=5
 
 # Store constraints in arrays for hard mode
 declare -a greens
 declare -a yellows
+feedback_str=""
 
 function check_guess {
 	local guess="$1"
@@ -48,7 +47,7 @@ function check_guess {
 	  fi
   done
 
-  echo "$result"
+  feedback_str="$result"
 }
 
 function enforce_hard_mode {
@@ -58,7 +57,7 @@ function enforce_hard_mode {
   # Check greens
   for ((i = 0; i < target_length; i++)); do
 	  if [ -n "${greens[$i]}" ] && [ "${guess:i:1}" != "${greens[$i]}" ]; then
-		sed -i '12s/.*/must use '${greens[$i]}' in position $((i + 1)) (hard mode)\n/' $frame_file
+		sed -i "12s/.*/must use '${greens[$i]}' in position $(( i + 1 )) (hard mode)\n/" $frame_file
 		  return 1
 	  fi
   done
@@ -66,7 +65,7 @@ function enforce_hard_mode {
   # Check yellows
   for yellow in "${yellows[@]}"; do
 	  if [[ "$guess" != *"$yellow"* ]]; then
-		sed -i '12s/.*/must include '$yellow' somewhere in your guess (hard mode)\n/' $frame_file
+		sed -i "12s/.*/must include '$yellow' somewhere in your guess (hard mode)\n/" $frame_file
 		  return 2
 	  fi
   done
@@ -118,7 +117,7 @@ function process_guess {
 		enforce_hard_mode "$guess" "$frame_file" # || return $?
 	fi
 
-	feedback_str="$(check_guess "$guess" "$frame_file")"
+	check_guess "$guess" "$frame_file"
 
 	# echos to the frame_file to render later
 	supply_string "$guess" "$feedback_str" "$frame_file" $attempt_number
