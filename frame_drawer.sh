@@ -16,10 +16,11 @@ BLACK="\033[97;40;1m"
 GREEN="\033[97;42;1m"
 YELLOW="\033[97;43;1m"
 GREY="\033[97;100;1m"
+RED="\033[31;40;1m"
 NOCOLOR="\033[0m"
 
 function setup_empty_frame {
-	local b="\033[97;100;1m"
+	local b="$BLACK"
 	local g="$GREEN"
 	local y="$YELLOW"
 	local n="$NOCOLOR"
