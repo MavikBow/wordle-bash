@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/env bash
 
-source ./word_getter.sh
-source ./help_menu.sh
-source ./frame_drawer.sh
-source ./check_logic.sh
+source ./lib/word_getter.sh
+source ./lib/help_menu.sh
+source ./lib/frame_drawer.sh
+source ./lib/check_logic.sh
 
 error_code=0
 hard_mode=0
