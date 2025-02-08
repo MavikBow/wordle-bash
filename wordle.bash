@@ -88,9 +88,9 @@ max_attempts=6
 now_attempt=1
 
 while true; do
-	read -e -p "" input_raw
-	tput cuu1
-	tput el
+	read input_raw
+	echo -ne "\033[1A"
+	echo -ne "\r\033[K"
 	input_arr=($input_raw)
 	input_str=$(echo ${input_arr[0]} | awk '{ print tolower($0) }')
 
