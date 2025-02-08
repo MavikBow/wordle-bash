@@ -15,6 +15,30 @@ word=""
 if [ $# -eq 0 ]; then
 	word=$(get_word)	
 	error_code=$?
+elif [ $# -eq 1 ]; then
+		case "$1" in
+			-h|-\?|help|--help)
+				print_help
+				exit 0
+				;;
+
+			-H|-hm|hard|--hard)
+				hard_mode=1
+				word=$(get_word)
+				error_code=$?
+				;;
+
+			-q|quiet|--quiet)
+				quiet_mode=1
+				word=$(get_word)
+				error_code=$?
+				;;
+
+			-r|random|--random)
+				word=$(get_word_rand)
+				random_chosen=1
+				;;
+		esac
 else
 	while [ -n "$1" ]; do
 		case "$1" in
@@ -25,10 +49,6 @@ else
 
 			-H|-hm|hard|--hard) 
 				hard_mode=1
-				if [[ $# -eq 1 && $random_chosen -eq 0 && $date_chosen -eq 0 ]]; then
-					word=$(get_word)	
-					error_code=$?
-				fi
 				;;
 
 			-q|quiet|--quiet)
@@ -70,6 +90,10 @@ else
 		esac
 		shift
 	done
+	if [[ $random_chosen -eq 0 && $date_chosen -eq 0 ]]; then
+		word=$(get_word)
+		error_code=$?
+	fi
 fi
 
 if [[ $error_code -eq 1 ]]; then
