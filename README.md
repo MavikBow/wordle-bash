@@ -26,6 +26,7 @@ Usage: ./wordle.bash [OPTION...]
  -d, date, --date YYYY/MM/DD    Plays a specific day. Note, you can't go earlier than 2021/06/19.
                                 today, yesterday and tomorrow can be used instead of YY/MM/DD.
  -r, random, --random           Plays a random word from the answer list.
+ -q, quiet, --quiet	        Stops the answer from showing upon losing.
 
 In-game commands:
 

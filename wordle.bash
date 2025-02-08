@@ -9,6 +9,7 @@ error_code=0
 hard_mode=0
 date_chosen=0
 random_chosen=0
+quiet_mode=0
 word=""
 
 if [ $# -eq 0 ]; then
@@ -28,6 +29,10 @@ else
 					word=$(get_word)	
 					error_code=$?
 				fi
+				;;
+
+			-q|quiet|--quiet)
+				quiet_mode=1
 				;;
 
 			-d|date|--date) 
@@ -118,6 +123,9 @@ while true; do
 			elif [ "$exit_status" -eq 0 ]; then
 				now_attempt=$(( $now_attempt + 1 ))
 				if [ $now_attempt -eq 7 ]; then
+					if [ $quiet_mode -eq 0 ]; then
+						sed -i "12s/.*/        \\\033\[97;41;1m$word\\\033\[0m\n/" $frame_file
+					fi
 					break
 				fi
 			fi

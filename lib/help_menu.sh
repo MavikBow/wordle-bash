@@ -9,6 +9,7 @@ function print_help {
 	echo " -d, date, --date YYYY/MM/DD	Plays a specific day. Note, you can't go earlier than 2021/06/19."
 	echo "				today, yesterday and tomorrow can be used instead of YY/MM/DD."
 	echo " -r, random, --random		Plays a random word from the answer list."
+	echo " -q, quiet, --quiet		Stops the answer from showing upon losing."
 	echo ""
 	echo "In-game commands:"
 	echo ""
