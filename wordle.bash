@@ -117,7 +117,6 @@ while true; do
 				break
 			elif [ "$exit_status" -eq 0 ]; then
 				now_attempt=$(( $now_attempt + 1 ))
-				echo $now_attempt >> file
 				if [ $now_attempt -eq 7 ]; then
 					break
 				fi
