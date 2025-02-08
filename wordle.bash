@@ -44,7 +44,7 @@ else
 				fi
 				word=$(get_word $2)	
 				error_code=$?
-				date_chosen=true
+				date_chosen=1
 				shift
 				;;
 
@@ -54,7 +54,7 @@ else
 					exit 0
 				else
 					word=$(get_word_rand)
-					random_chosen=true
+					random_chosen=1
 				fi
 				;;
 
