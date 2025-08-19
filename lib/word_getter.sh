@@ -1,18 +1,18 @@
 # pass the $date_str to it
 function get_from_curl {
-	if [[ -n $(command -v curl) ]]; then
+	if [[ $(which curl) ]]; then
 		timeout 7s curl -s "https://www.nytimes.com/svc/wordle/v2/$1.json" | sed -n 's/.*"solution":"\([a-z]*\)".*/\1/p'
 	fi
 }
 
 function get_from_wget {
-	if [[ -n $(command -v curl) ]]; then
+	if [[ $(which wget) ]]; then
 		timeout 7s wget -qO- "https://www.nytimes.com/svc/wordle/v2/$1.json" | sed -n 's/.*"solution":"\([a-z]*\)".*/\1/p'
 	fi
 }
 
 function get_from_openssl {
-	if [[ -n $(command -v curl) ]]; then
+	if [[ $(which openssl) ]]; then
 		timeout 7s echo -e "GET /svc/wordle/v2/$1.json HTTP/1.1\r\nHost: www.nytimes.com\r\nConnection: close\r\n\r\n" | openssl s_client -connect www.nytimes.com:443 -quiet 2> /dev/null | sed -n 's/.*"solution":"\([a-z]*\)".*/\1/p'
 	fi
 }
