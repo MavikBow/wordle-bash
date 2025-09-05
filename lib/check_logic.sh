@@ -1,4 +1,4 @@
-source ./lib/frame_drawer.sh
+source "$dirname/lib/frame_drawer.sh"
 
 target_length=5
 

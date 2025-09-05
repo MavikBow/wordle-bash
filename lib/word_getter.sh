@@ -63,5 +63,5 @@ function get_word {
 
 function get_word_rand {
 	number=$(( $RANDOM % 2309 + 1 ))
-	sed -n "${number}p" .answerlist.txt
+	sed -n "${number}p" "$dirname/.answerlist.txt"
 }
