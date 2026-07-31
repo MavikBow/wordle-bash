@@ -1,6 +1,6 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
-dirname=${0%/*}
+dirname=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
 source "$dirname/lib/word_getter.sh"
 source "$dirname/lib/help_menu.sh"
@@ -113,22 +113,28 @@ fi
 
 word="${word:0:5}"
 frame_file=$(mktemp)
+# Ensures cleanup of temp file on normal exit, error, or Ctrl+C
+trap 'rm -f "$frame_file"' EXIT
 setup_empty_frame $frame_file
 echo -ne "$(cat $frame_file)"
 max_attempts=6
 now_attempt=1
 
 while true; do
-	read input_raw
+	# Safely catch EOF (Ctrl+D) to prevent infinite loops
+	if ! read -r input_raw; then
+		break;
+	fi
 	echo -ne "\033[1A"
 	echo -ne "\r\033[K"
-	input_arr=($input_raw)
-	input_str=$(echo ${input_arr[0]} | awk '{ print tolower($0) }')
+	# Safe read to avoid globbing, and native bash lowercasing
+	read -r input_str rest_of_line <<< "$input_raw"
+	input_str="${input_str,,}"
 
 	if [[ $input_str =~ ^(:(q|quit|exit))|(quit|exit)$ ]]; then
 		break
 	elif [[ $input_str =~ ^[a-z]{5}$ ]]; then
-		if [[ -z "$(grep -F "$input_str" "$dirname/.wordlist.txt")" ]]; then
+		if [[ -z "$(grep -qFx "$input_str" "$dirname/.wordlist.txt")" ]]; then
 			sed -i '12s/.*/  not in word list\n/' $frame_file
 		else
 			sed -i '12s/.*/ /' $frame_file
@@ -165,5 +171,4 @@ while true; do
 done
 
 draw_frame $frame_file
-rm $frame_file
 exit 0
