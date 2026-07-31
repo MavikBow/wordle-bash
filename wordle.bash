@@ -134,7 +134,7 @@ while true; do
 	if [[ $input_str =~ ^(:(q|quit|exit))|(quit|exit)$ ]]; then
 		break
 	elif [[ $input_str =~ ^[a-z]{5}$ ]]; then
-		if [[ -z "$(grep -qFx "$input_str" "$dirname/.wordlist.txt")" ]]; then
+		if [[ -z "$(grep -F "$input_str" "$dirname/.wordlist.txt")" ]]; then
 			sed -i '12s/.*/  not in word list\n/' $frame_file
 		else
 			sed -i '12s/.*/ /' $frame_file
