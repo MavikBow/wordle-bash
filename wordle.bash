@@ -2,6 +2,7 @@
 
 dirname=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
+source "$dirname/lib/os_checker.sh"
 source "$dirname/lib/word_getter.sh"
 source "$dirname/lib/help_menu.sh"
 source "$dirname/lib/frame_drawer.sh"
@@ -135,35 +136,35 @@ while true; do
 		break
 	elif [[ $input_str =~ ^[a-z]{5}$ ]]; then
 		if [[ -z "$(grep -F "$input_str" "$dirname/.wordlist.txt")" ]]; then
-			sed -i '12s/.*/  not in word list\n/' $frame_file
+			ossed '12s/.*/  not in word list\n/' $frame_file
 		else
-			sed -i '12s/.*/ /' $frame_file
+			ossed '12s/.*/ /' $frame_file
 			# here should be the main logic
 			# parameters are: $target $guess $frame_file $is_hard_mode $attempt_number
 			process_guess $word $input_str $frame_file $hard_mode $now_attempt
 			exit_status=$?
 			if [ "$exit_status" -eq 69 ]; then
 				case $now_attempt in
-					1) sed -i "12s/.*/      \\\033\[97;42;1mGenius\\\033[0m\n/" $frame_file ;;
-					2) sed -i "12s/.*/    \\\033\[97;42;1mMagnificent\\\033\[0m\n/" $frame_file ;;
-					3) sed -i "12s/.*/     \\\033\[97;42;1mImpressive\\\033\[0m\n/" $frame_file ;;
-					4) sed -i "12s/.*/      \\\033\[97;42;1mSplendid\\\033\[0m\n/" $frame_file ;;
-					5) sed -i "12s/.*/        \\\033\[97;42;1mGreat\\\033\[0m\n/" $frame_file ;;
-					6) sed -i "12s/.*/        \\\033\[97;42;1mPhew\\\033\[0m\n/" $frame_file ;;
+					1) ossed "12s/.*/      \\\033\[97;42;1mGenius\\\033[0m\n/" $frame_file ;;
+					2) ossed "12s/.*/    \\\033\[97;42;1mMagnificent\\\033\[0m\n/" $frame_file ;;
+					3) ossed "12s/.*/     \\\033\[97;42;1mImpressive\\\033\[0m\n/" $frame_file ;;
+					4) ossed "12s/.*/      \\\033\[97;42;1mSplendid\\\033\[0m\n/" $frame_file ;;
+					5) ossed "12s/.*/        \\\033\[97;42;1mGreat\\\033\[0m\n/" $frame_file ;;
+					6) ossed "12s/.*/        \\\033\[97;42;1mPhew\\\033\[0m\n/" $frame_file ;;
 				esac
 				break
 			elif [ "$exit_status" -eq 0 ]; then
 				now_attempt=$(( $now_attempt + 1 ))
 				if [ $now_attempt -eq 7 ]; then
 					if [ $quiet_mode -eq 0 ]; then
-						sed -i "12s/.*/        \\\033\[97;41;1m$word\\\033\[0m\n/" $frame_file
+						ossed "12s/.*/        \\\033\[97;41;1m$word\\\033\[0m\n/" $frame_file
 					fi
 					break
 				fi
 			fi
 		fi
 	else
-		sed -i '12s/.*/  unknown command\n/' $frame_file
+		ossed '12s/.*/  unknown command\n/' $frame_file
 	fi
 
 	draw_frame $frame_file

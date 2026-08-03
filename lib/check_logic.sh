@@ -56,7 +56,7 @@ function enforce_hard_mode {
   # Check greens
   for ((i = 0; i < target_length; i++)); do
 	  if [ -n "${greens[$i]}" ] && [ "${guess:i:1}" != "${greens[$i]}" ]; then
-		sed -i "12s/.*/  must use '${greens[$i]}' at $(( i + 1 ))\n/" $frame_file
+		ossed "12s/.*/  must use '${greens[$i]}' at $(( i + 1 ))\n/" $frame_file
 		  return 1
 	  fi
   done
@@ -64,7 +64,7 @@ function enforce_hard_mode {
   # Check yellows
   for yellow in "${yellows[@]}"; do
 	  if [[ "$guess" != *"$yellow"* ]]; then
-		sed -i "12s/.*/  must include '$yellow'\n/" $frame_file
+		ossed "12s/.*/  must include '$yellow'\n/" $frame_file
 		  return 2
 	  fi
   done
@@ -87,21 +87,21 @@ function supply_string {
 				# Can't use the colors from frame_drawer because
 				# the stupid [ has to be \[. otherwise sed won't do it
 				replacement="\\\033\[31;40;1m${guess:i:1}\\\033\[0m"
-				sed -i -r "9,11s/$regex/$replacement/g" $frame_file
+				ossed -r "9,11s/$regex/$replacement/g" $frame_file
 				;;
 			Y) final_str+=" \\${YELLOW}${guess:i:1}\\${NOCOLOR}"
 				# Draws in yellow
 				replacement="\\\033\[97;43;1m${guess:i:1}\\\033\[0m"
-				sed -i -r "9,11s/$regex/$replacement/g" $frame_file
+				ossed -r "9,11s/$regex/$replacement/g" $frame_file
 				;;
 			G) final_str+=" \\${GREEN}${guess:i:1}\\${NOCOLOR}"
 				# Draws in green
 				replacement="\\\033\[97;42;1m${guess:i:1}\\\033\[0m"
-				sed -i -r "9,11s/$regex/$replacement/g" $frame_file
+				ossed -r "9,11s/$regex/$replacement/g" $frame_file
 				;;
 		esac
 	done
-	sed -i "$(( 1 + $attempt_number ))s/.*/$final_str/" $frame_file
+	ossed "$(( 1 + $attempt_number ))s/.*/$final_str/" $frame_file
 }
 
 # parameters are: $target $guess $frame_file $is_hard_mode $attempt_number
